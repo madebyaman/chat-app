@@ -3,8 +3,9 @@ import clsx from 'clsx';
 import SendMessage from './send-message';
 import { createClient } from '@/lib/supabase';
 import { notFound } from 'next/navigation';
-import Message from './messages';
 import Messages from './messages';
+
+export const revalidate = 0;
 
 async function getMessages(id: string) {
   const supabase = createClient();

@@ -13,7 +13,7 @@ export async function middleware(req: NextRequest) {
     data: { session },
   } = await supabase.auth.getSession()
 
-  if (!session && (req.nextUrl.pathname.startsWith('/rooms') || req.nextUrl.pathname.startsWith('/username'))) {
+  if (!session && (req.nextUrl.pathname.startsWith('/rooms') || req.nextUrl.pathname.startsWith('/profile'))) {
     // Auth condition not met, redirect to home page.
     const redirectUrl = req.nextUrl.clone();
     redirectUrl.pathname = '/';
@@ -27,7 +27,7 @@ export async function middleware(req: NextRequest) {
 
     if (!username) {
       const redirectUrl = req.nextUrl.clone();
-      redirectUrl.pathname = '/username';
+      redirectUrl.pathname = '/profile';
       redirectUrl.searchParams.set(`redirectedFrom`, req.nextUrl.pathname);
       return NextResponse.redirect(redirectUrl);
     }

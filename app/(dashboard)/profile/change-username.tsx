@@ -2,10 +2,13 @@
 
 import { useSupabase } from '@/components/supabase-provider';
 import clsx from 'clsx';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { FormEvent, useState } from 'react';
 
 export default function ChangeUsername({ username }: { username?: string }) {
   const [name, setname] = useState(username || '');
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const { supabase } = useSupabase();
 
   const [status, setStatus] = useState<
@@ -56,6 +59,9 @@ export default function ChangeUsername({ username }: { username?: string }) {
 
       let { error } = await supabase.from('profiles').upsert(updates);
       setStatus('FORM_SUCCESS');
+      setname('');
+      const redirecteTo = searchParams.get('redirectedFrom');
+      if (redirecteTo) router.push(redirecteTo);
 
       if (error) {
         throw error;
@@ -106,7 +112,7 @@ export default function ChangeUsername({ username }: { username?: string }) {
       </button>
       <p className="text-sm font-medium">
         {status === 'FORM_ERROR' && '❌ Error updating'}
-        {status === 'FORM_SUCCESS' && '✅ Form submitted successfully'}
+        {status === 'FORM_SUCCESS' && '✅ Successfully updated username'}
       </p>
     </form>
   );

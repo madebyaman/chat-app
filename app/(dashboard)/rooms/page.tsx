@@ -3,6 +3,8 @@ import CreateRoom from './create-room';
 import Link from 'next/link';
 import Container from '@/components/container';
 
+export const revalidate = 0;
+
 async function getAllRooms() {
   const supabase = createClient();
   const { data, error } = await supabase.from('rooms').select(`
